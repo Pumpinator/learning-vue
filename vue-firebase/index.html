@@ -4,29 +4,127 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Learning Vue</title>
     <script src="https://unpkg.com/vue@3.0.2"></script>
+    <style>
+      body {
+        background: #eee;
+        max-width: 960px;
+        margin: 20px auto;
+      }
+
+      .box {
+        padding: 100px 0;
+        width: 400px;
+        text-align: center;
+        background: #ddd;
+        margin: 20px;
+        display: inline-block;
+      }
+
+      img {
+        width: 128px;
+      }
+
+      p,
+      h3,
+      ul {
+        margin: 0;
+        padding: 0;
+
+        .favorite {
+          background: lightgoldenrodyellow;
+        }
+      }
+
+      li {
+        list-style-type: none;
+        margin: 20px auto;
+        padding: 10px 20px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+    </style>
   </head>
   <body>
     <h1>Hello, Vue :)</h1>
     <div id="app">
-        <div v-if="showingBookTitle">
-            <p>{{bookTitle}} - {{author}} - {{age}}</p>
-        </div>
+      <a v-bind:href="url">Best university ever</a>
+      <div v-if="showingAuthor">
+        <img :src="img" :alt="title" />
+        <p>{{title}} - {{author}} - {{age}}</p>
+      </div>
+
+      <input v-model="title" />
 
       <button v-on:click="age++;">Increase age</button>
       <button v-on:click="age--;">Decrease age</button>
 
-      <div @click="changeBookTitle('Other title')">Change book title</div>
-
-      <button @click="toggleBookTitle">
-        <span v-if="showingBookTitle">Hide books</span>
-        <span v-else>Show books</span>
-        <!-- <span v-if="!showingBookTitle">Show books</span> 
+      <button @click="toggleAuthor">
+        <span v-if="showingAuthor">Hide author</span>
+        <span v-else>Show author</span>
+        <!-- <span v-if="!showingBook">Show books</span> 
         Removes from DOM
         -->
       </button>
 
-      <div v-show="showingBookTitle">Currently showing books.</div>
+      <div v-show="showingAuthor">Currently showing author.</div>
       <!-- Removes using CSS -->
+
+      <br />
+
+      <div class="box" @mouseover="handleMouseEvent($event, 5)">
+        On mouse over
+      </div>
+      <div class="box" @mouseleave="handleMouseEvent">On mouse leave</div>
+      <div class="box" @dblclick="handleMouseEvent">On double click</div>
+      <div class="box" @mousemove="handleMouseMove">
+        Position x: {{x}} &nbsp; y: {{y}}
+      </div>
+
+      <br />
+
+      <div v-if="showingBooks">
+        <h2 v-if="!favoriteBooks.length==0">Favorite Books</h2>
+        <ul>
+          <li
+            v-for="book in favoriteBooks"
+            @click="toggleFavorite(book)"
+            :class="{favorite: book.isFavorite}"
+          >
+            <img :src="book.img" :alt="book.title" />
+            <h3>{{book.title}}</h3>
+            <p>
+                {{book.author}}
+                <br>
+                Age {{book.age}}
+            </p>
+          </li>
+        </ul>
+        <h2 v-if="!nonFavoriteBooks.length==0">Non favorite Books</h2>
+        <ul>
+          <li
+            v-for="book in nonFavoriteBooks"
+            @click="toggleFavorite(book)"
+            :class="{favorite: book.isFavorite}"
+          >
+            <img :src="book.img" :alt="book.title" />
+            <h3>{{book.title}}</h3>
+            <p>
+                {{book.author}}
+                <br>
+                Age {{book.age}}
+            </p>
+          </li>
+        </ul>
+      </div>
+      <button @click="toggleBooks">
+        <span v-if="showingBooks">Hide books</span>
+        <span v-else>Show books</span>
+        <!-- <span v-if="!showingBook">Show books</span> 
+        Removes from DOM
+        -->
+      </button>
     </div>
     <script src="app.js"></script>
   </body>
