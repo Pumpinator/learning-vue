@@ -14,7 +14,7 @@
                 <option value="designer">Web Designer</option>
             </select>
             <label>Skills</label>
-            <input type="text" v-model="tempSkill" @keyup.alt="addSkill">
+            <input type="text" v-model="tempSkill" @keyup="addSkill">
             <div class="pill" v-for="skill in skills" :key="skill">
                 <span @click="deleteSkill(skill)">{{ skill }}</span>
             </div>
@@ -59,7 +59,7 @@ export default {
         addSkill(event) {
             if (event.key === 'Enter' || event.key === ',' || event.key === '.' || event.key === '-' && this.tempSkill) {
                 if (!this.skills.includes(this.tempSkill)) {
-                    this.skills.push(this.tempSkill);
+                    this.skills.push(this.tempSkill.slice(0, -1));
                     this.tempSkill = '';
                 }
             }
